@@ -1,12 +1,12 @@
 // src/App.js
 import React from 'react';
 import './App.css';
-import AnimeList from './AnimeList';
+import GuessAnimeGame from './GuessAnime';
 
 const App = () => {
   return (
     <div className="App">
-      <AnimeList />
+      <GuessAnimeGame />
     </div>
   );
 };
