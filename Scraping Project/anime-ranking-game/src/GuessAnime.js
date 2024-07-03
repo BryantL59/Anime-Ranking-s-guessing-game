@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './App.css'
 
 const GuessAnimeGame = () => {
   const [anime, setAnime] = useState(null);
@@ -7,7 +6,7 @@ const GuessAnimeGame = () => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [attempts, setAttempts] = useState(3);
+  const [attempts, setAttempts] = useState(5);
   const [showHint, setShowHint] = useState(false);
   const [guessHistory, setGuessHistory] = useState([]);
 
@@ -20,7 +19,7 @@ const GuessAnimeGame = () => {
       }
       const data = await response.json();
       setAnime(data);
-      setAttempts(3);
+      setAttempts(5);
       setShowHint(false);
       setMessage('');
       setGuess('');
@@ -40,8 +39,17 @@ const GuessAnimeGame = () => {
     e.preventDefault(); 
   
     const guessedRank = parseInt(guess);
+
+    if (isNaN(guessedRank)) {
+      setMessage('please enter a valid number for the ranking');
+      return
+    }
+
     if (guessedRank === parseInt(anime.rank)) {
       setMessage('Correct! You guessed the right ranking.');
+      setTimeout(() => {
+        fetchRandomAnime();
+      }, 2000);
     } else {
       const remainingAttempts = attempts - 1; 
       let guessResult = '';
@@ -93,10 +101,11 @@ const GuessAnimeGame = () => {
   );
 
   const guessHistoryItemStyle = {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#FFFFFF',
     borderRadius: '5px',
     padding: '10px',
     marginBottom: '10px',
+    color: '#000000'
   };
 
   const guessHistoryItemContentStyle = {

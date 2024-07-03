@@ -6,7 +6,7 @@ import random
 
 app = Flask(__name__)
 CORS(app)
-
+'''used for the lists'''
 @app.route('/scrape', methods=['GET'])
 def scrape():
     website = 'https://myanimelist.net/topanime.php'
@@ -23,7 +23,7 @@ def scrape():
         rank = row.find('td', class_='rank').get_text(strip=True)
         title = row.find('h3', class_='anime_ranking_h3').get_text(strip=True)
         score = row.find('td', class_='score').get_text(strip=True)
-        image_url = row.find('img')['data-src']  # Extracting the image URL
+        image_url = row.find('img')['data-src']
         
         anime_list.append({
             'rank': rank,
@@ -36,6 +36,7 @@ def scrape():
 
 @app.route('/random-anime', methods=['GET'])
 def random_anime():
+    #URl and wesbite information
     website = 'https://myanimelist.net/topanime.php'
     response = requests.get(website)
     content = response.text
@@ -46,12 +47,14 @@ def random_anime():
     
     anime_list = []
 
+    #iterates through the table to find nessesary information
     for row in table.find_all('tr', class_='ranking-list'):
         rank = row.find('td', class_='rank').get_text(strip=True)
         title = row.find('h3', class_='anime_ranking_h3').get_text(strip=True)
         score = row.find('td', class_='score').get_text(strip=True)
         image_url = row.find('img')['data-src']  # Extracting the image URL
         
+        #appends the data as a dictionary
         anime_list.append({
             'rank': rank,
             'title': title,
@@ -60,7 +63,7 @@ def random_anime():
         })
 
     random_anime = random.choice(anime_list)
-    return jsonify(random_anime)
+    return jsonify(random_anime) #returns a random anime as a Json response 
 
 if __name__ == '__main__':
     app.run(debug=True)
